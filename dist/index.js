@@ -33,18 +33,18 @@ class DocuPorter {
     appendText(...text) {
         this.append(`${text.join(' ')}\n`);
     }
-    appendCode(code, lang = '') {
+    appendCode(code, lang = '', comment = '') {
         const codeBlock = '```';
-        this.append(`${codeBlock}${lang}\n${code}\n${codeBlock}\n`);
+        this.append(`${codeBlock}${lang}\n${comment.length ? `\n// ${comment}\n` : ''}${code}\n${codeBlock}\n`);
     }
     appendJson(json) {
         this.appendCode(JSON.stringify(json, null, 2), 'JSON');
     }
-    appendJs(js) {
-        this.appendCode(js, 'JavaScript');
+    appendJs(js, comment) {
+        this.appendCode(js, 'JavaScript', comment);
     }
-    appendTs(ts) {
-        this.appendCode(ts, 'TypeScrypt');
+    appendTs(ts, comment) {
+        this.appendCode(ts, 'TypeScrypt', comment);
     }
     mute(value) {
         if (this.muted)

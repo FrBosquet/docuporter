@@ -29,22 +29,22 @@ export class DocuPorter {
     this.append(`${text.join(' ')}\n`)
   }
 
-  appendCode(code: string, lang = '') {
+  appendCode(code: string, lang = '', comment = '') {
     const codeBlock = '```'
 
-    this.append(`${codeBlock}${lang}\n${code}\n${codeBlock}\n`)
+    this.append(`${codeBlock}${lang}\n${comment.length ? `\n// ${comment}\n` : ''}${code}\n${codeBlock}\n`)
   }
 
   appendJson(json: any) {
     this.appendCode(JSON.stringify(json, null, 2), 'JSON')
   }
 
-  appendJs(js: string) {
-    this.appendCode(js, 'JavaScript')
+  appendJs(js: string, comment?: string) {
+    this.appendCode(js, 'JavaScript', comment)
   }
 
-  appendTs(ts: any) {
-    this.appendCode(ts, 'TypeScrypt')
+  appendTs(ts: any, comment?: string) {
+    this.appendCode(ts, 'TypeScrypt', comment)
   }
 
   text = this.appendText
