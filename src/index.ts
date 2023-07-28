@@ -32,7 +32,7 @@ export class DocuPorter {
   appendCode(code: string, lang = '', comment = '') {
     const codeBlock = '```'
 
-    this.append(`${codeBlock}${lang}\n${comment.length ? `\n// ${comment}\n` : ''}${code}\n${codeBlock}\n`)
+    this.append(`${codeBlock}${lang}\n${comment.length ? `// ${comment}\n\n` : ''}${code}\n${codeBlock}\n`)
   }
 
   appendJson(json: any) {
