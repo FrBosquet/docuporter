@@ -40,11 +40,11 @@ export class DocuPorter {
   }
 
   appendJs(js: string, comment?: string) {
-    this.appendCode(js, 'JavaScript', comment)
+    this.appendCode(js, 'javascript', comment)
   }
 
   appendTs(ts: any, comment?: string) {
-    this.appendCode(ts, 'TypeScrypt', comment)
+    this.appendCode(ts, 'typescript', comment)
   }
 
   text = this.appendText
