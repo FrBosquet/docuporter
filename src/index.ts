@@ -1,9 +1,12 @@
 import * as path from 'path'
 import * as fs from 'fs'
+import { KVStore } from './store'
 
 export class DocuPorter {
   private filePath: string
   private muted = false
+  public values: KVStore = new KVStore()
+  public conditions: KVStore = new KVStore()
 
   constructor(fileName: string) {
     this.filePath = path.join(process.cwd(), fileName)
@@ -16,7 +19,7 @@ export class DocuPorter {
   }
 
   private append(text: string) {
-    if (!this.muted) {
+    if (this.valuesMatch() && !this.muted) {
       fs.appendFileSync(this.filePath, `\n${text}`)
     }
   }
@@ -44,7 +47,7 @@ export class DocuPorter {
     this.appendCode(js, 'javascript', comment)
   }
 
-  appendTs(ts: any, comment?: string) {
+  appendTs(ts: string, comment?: string) {
     this.appendCode(ts, 'typescript', comment)
   }
 
@@ -59,10 +62,16 @@ export class DocuPorter {
   h4 = (header: string) => this.appendHeader(header, 4)
   h5 = (header: string) => this.appendHeader(header, 5)
 
-  mute(value: boolean) {
-    if (this.muted) return;
+  match(key: string) {
+    // if no condition is set, return true
+    if (!this.conditions.get(key) || !this.values.get(key)) return true
 
-    this.muted = value
+    return this.conditions.get(key) === this.values.get(key)
+  }
+
+  valuesMatch() {
+    const currentValues = this.values.getAll()
+    return Object.keys(currentValues).every(key => this.match(key))
   }
 
   log(...args: any[]) {
@@ -71,15 +80,11 @@ export class DocuPorter {
     }
   }
 
-  get quiet() {
-    return this.muted
+  mute() {
+    this.muted = true
   }
 
-  get loud() {
-    return !this.muted
-  }
-
-  stopMute() {
+  unMute() {
     this.muted = false
   }
 }
