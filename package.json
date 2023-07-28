@@ -1,0 +1,22 @@
+{
+  "name": "docuporter",
+  "version": "0.1.0",
+  "description": "Understand a file by documenting it in a markdown file",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "FrBosquet",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@types/node": "^20.4.5"
+  }
+}
