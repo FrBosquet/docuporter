@@ -26,7 +26,8 @@ export class DocuPorter {
   }
 
   appendText(...text: string[]) {
-    this.append(`${text.join(' ')}\n`)
+    // use :: to start/end inline code blocks
+    this.append(`${text.map(s => s.replace(/::/g, '`')).join(' ')}\n`)
   }
 
   appendCode(code: string, lang = '', comment = '') {
