@@ -14,9 +14,7 @@
   "author": "FrBosquet",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.1.6"
-  },
-  "dependencies": {
+    "typescript": "^5.1.6",
     "@types/node": "^20.4.5"
   }
 }
