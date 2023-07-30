@@ -75,7 +75,7 @@ export class DocuPorter {
   }
 
   log(...args: any[]) {
-    if (!this.muted) {
+    if (this.valuesMatch() && !this.muted) {
       console.log(...args)
     }
   }
