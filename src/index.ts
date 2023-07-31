@@ -1,12 +1,11 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import { KVStore } from './store'
 
 export class DocuPorter {
   private filePath: string
   private muted = false
-  public values: KVStore = new KVStore()
-  public conditions: KVStore = new KVStore()
+  private values = new Map()
+  private conditions = new Map()
 
   constructor(fileName: string) {
     this.filePath = path.join(process.cwd(), fileName)
@@ -70,7 +69,7 @@ export class DocuPorter {
   }
 
   valuesMatch() {
-    const currentValues = this.values.getAll()
+    const currentValues = Object.fromEntries(this.values)
     return Object.keys(currentValues).every(key => this.match(key))
   }
 
@@ -86,5 +85,37 @@ export class DocuPorter {
 
   unMute() {
     this.muted = false
+  }
+
+  setValue(key: string, value: string) {
+    this.values.set(key, value)
+  }
+
+  setValues(values: Record<string, string>) {
+    Object.entries(values).forEach(([key, value]) => this.setValue(key, value))
+  }
+
+  clearValue(key: string) {
+    this.values.delete(key)
+  }
+
+  clearValues() {
+    this.values.clear()
+  }
+
+  setCondition(key: string, value: string) {
+    this.conditions.set(key, value)
+  }
+
+  setConditions(conditions: Record<string, string>) {
+    Object.entries(conditions).forEach(([key, value]) => this.setCondition(key, value))
+  }
+
+  clearCondition(key: string) {
+    this.conditions.delete(key)
+  }
+
+  clearConditions() {
+    this.conditions.clear()
   }
 }

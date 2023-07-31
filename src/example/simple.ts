@@ -72,13 +72,13 @@ rep.json(peopleWithSalaries);
 rep.h2('Total Salaries:');
 
 // When traversing a list of object, we may want to report only one item to make an example. We can use the reporter conditions and values to do that. In this case, we only want to mkae reporting for the second person in the list, so we set the condition name to be Jane. Now we can set the value of name to be each of the name of the report, and only when the name matches the condition, the report will take place
-rep.conditions.set('name', 'Jane');
+rep.setCondition('name', 'Jane');
 
 rep.text('We can now sum all the salaries to get the total amount of money they make together using a reduce function:');
 rep.ts(`const totalSalaries = peopleWithSalaries.reduce((acc, person) => acc + person.salary, 0);`);
 
 const totalSalaries = peopleWithSalaries.reduce((acc, person) => {
-  rep.values.set('name', person.name);
+  rep.setValue('name', person.name);
 
   // This report will only take place when the name is Jane
   rep.text('During the iterations, we sum up each person salary to the accumulator:');
@@ -95,8 +95,8 @@ const totalSalaries = peopleWithSalaries.reduce((acc, person) => {
 }, 0);
 
 // Once we are done with the calculation loop, we can clear up the conditions and values so they don't affect the rest of the report
-rep.conditions.clearAll();
-rep.values.clearAll();
+rep.clearConditions();
+rep.clearValues();
 
 rep.text('And we get the total salaries:');
 rep.json(totalSalaries);
