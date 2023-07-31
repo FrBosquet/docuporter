@@ -1,11 +1,17 @@
 import * as path from 'path'
 import * as fs from 'fs'
 
+enum TicketState {
+  New,
+  InProgress,
+  Used,
+}
 export class DocuPorter {
   private filePath: string
   private muted = false
   private values = new Map()
   private conditions = new Map()
+  private ticket = new Map<string, TicketState>()
 
   constructor(fileName: string) {
     this.filePath = path.join(process.cwd(), fileName)
@@ -18,7 +24,7 @@ export class DocuPorter {
   }
 
   private append(text: string) {
-    if (this.valuesMatch() && !this.muted) {
+    if (this.isNoisy()) {
       fs.appendFileSync(this.filePath, `\n${text}`)
     }
   }
@@ -74,7 +80,7 @@ export class DocuPorter {
   }
 
   log(...args: any[]) {
-    if (this.valuesMatch() && !this.muted) {
+    if (this.isNoisy()) {
       console.log(...args)
     }
   }
@@ -85,6 +91,10 @@ export class DocuPorter {
 
   unMute() {
     this.muted = false
+  }
+
+  private isNoisy() {
+    return this.anyTicketOngoing() || (this.valuesMatch() && !this.muted)
   }
 
   setValue(key: string, value: string) {
@@ -117,5 +127,21 @@ export class DocuPorter {
 
   clearConditions() {
     this.conditions.clear()
+  }
+
+  addTicket(ticket: string) {
+    this.ticket.set(ticket, TicketState.New)
+  }
+
+  useTicket(ticket: string) {
+    this.ticket.set(ticket, TicketState.InProgress)
+  }
+
+  finishTicket(ticket: string) {
+    this.ticket.set(ticket, TicketState.Used)
+  }
+
+  private anyTicketOngoing() {
+    return Array.from(this.ticket.values()).some(state => state === TicketState.InProgress)
   }
 }
