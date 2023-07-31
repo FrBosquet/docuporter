@@ -6,10 +6,7 @@
 
 import { DocuPorter } from "..";
 
-import path from 'path';
-
-const fileNameWithoutExt = path.basename(__filename, path.extname(__filename));
-const mdPath = path.join('src/example', `${fileNameWithoutExt}.md`);
+const mdPath = 'src/example/simple.md';
 
 // We need to instantiate a DocuPorter object with the path to the markdown file where we want to write the report
 const rep = new DocuPorter(mdPath);
