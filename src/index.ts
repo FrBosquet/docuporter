@@ -29,31 +29,36 @@ export class DocuPorter {
     }
   }
 
-  appendHeader(header: string, order: 1 | 2 | 3 | 4 | 5 = 2) {
+  private appendHeader(header: string, order: 1 | 2 | 3 | 4 | 5 = 2) {
     this.append(`${'#'.repeat(order)} ${header}\n`)
   }
 
-  appendText(...text: string[]) {
+  private appendText(...text: string[]) {
     // use :: to start/end inline code blocks
     this.append(`${text.map(s => s.replace(/::/g, '`')).join(' ')}\n`)
   }
 
-  appendCode(code: string, lang = '', comment = '') {
+  private appendCode(code: string, lang = '', comment = '') {
     const codeBlock = '```'
 
     this.append(`${codeBlock}${lang}\n${comment.length ? `// ${comment}\n\n` : ''}${code}\n${codeBlock}\n`)
   }
 
-  appendJson(json: any) {
+  private appendJson(json: any) {
     this.appendCode(JSON.stringify(json, null, 2), 'JSON')
   }
 
-  appendJs(js: string, comment?: string) {
+  private appendJs(js: string, comment?: string) {
     this.appendCode(js, 'javascript', comment)
   }
 
-  appendTs(ts: string, comment?: string) {
+  private appendTs(ts: string, comment?: string) {
     this.appendCode(ts, 'typescript', comment)
+  }
+
+  private appendLabeledJson(label: string, code: any) {
+    this.appendText(label)
+    this.appendJson(code)
   }
 
   text = this.appendText
@@ -61,11 +66,12 @@ export class DocuPorter {
   js = this.appendJs
   ts = this.appendTs
   header = this.appendHeader
-  h1 = (header: string) => this.appendHeader(header, 1)
-  h2 = (header: string) => this.appendHeader(header, 2)
-  h3 = (header: string) => this.appendHeader(header, 3)
-  h4 = (header: string) => this.appendHeader(header, 4)
-  h5 = (header: string) => this.appendHeader(header, 5)
+  h1 = (...header: string[]) => this.appendHeader(header.join(' '), 1)
+  h2 = (...header: string[]) => this.appendHeader(header.join(' '), 2)
+  h3 = (...header: string[]) => this.appendHeader(header.join(' '), 3)
+  h4 = (...header: string[]) => this.appendHeader(header.join(' '), 4)
+  h5 = (...header: string[]) => this.appendHeader(header.join(' '), 5)
+  ljson = this.appendLabeledJson
 
   match(key: string) {
     // if no condition is set, return true
@@ -83,6 +89,19 @@ export class DocuPorter {
     if (this.isNoisy()) {
       console.log(...args)
     }
+  }
+
+  logState() {
+    const values = Object.fromEntries(this.values)
+    const conditions = Object.fromEntries(this.conditions)
+    const tickets = Object.fromEntries(this.ticket)
+
+    console.log({
+      values,
+      conditions,
+      tickets,
+      muted: this.muted,
+    })
   }
 
   mute() {
