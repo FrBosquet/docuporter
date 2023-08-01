@@ -1,6 +1,6 @@
 {
   "name": "docuporter",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Understand a file by documenting it in a markdown file",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
