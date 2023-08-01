@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "example:simple": "ts-node src/example/simple.ts"
+    "example:simple": "ts-node src/example/simple.ts",
+    "ci": "npm install && npm run build"
   },
   "author": "FrBosquet",
   "license": "ISC",
